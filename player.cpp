@@ -35,8 +35,79 @@ void Player::modifyMaxHP(int amount){
     if(hp < 0) hp = 0;
 }
     
+Player createPlayer(){
+    std::string name;
+    std::string classChoice;
+    Stats stats;
+    std::cout << "Enter your character's name: ";
+    std::getline(std::cin, name);
+
+    std::cout << "\nChoose your class:\n";
+    std::cout << "1. Warrior\n";
+    std::cout << "2. Mage\n";
+    std::cout << "3. Tank\n";
+    std::cout << "4. Ninja\n";
+
+    int choice;
+    std::cin >> choice;
+    std::cin.ignore(); // clear newline
+
+    switch(choice){
+        case 1:
+            stats.strength = 8;
+            stats.endurance = 6;
+            stats.intelligence = 2;
+            stats.willpower = 4;
+            stats.speed = 4;
+            stats.charisma = 2;
+            stats.luck = 4;
+            classChoice = "Warrior";
+            break;
+
+        case 2:
+            stats.strength = 2;
+            stats.endurance = 4;
+            stats.intelligence = 8;
+            stats.willpower = 5;
+            stats.speed = 5;
+            stats.charisma = 2;
+            stats.luck = 4;
+            classChoice = "Mage";
+            break;
+
+        case 3:
+            stats.strength = 5;
+            stats.endurance = 8;
+            stats.intelligence = 2;
+            stats.willpower = 7;
+            stats.speed = 2;
+            stats.charisma = 3;
+            stats.luck = 3;
+            classChoice = "Tank";
+            break;
+
+        case 4:
+            stats.strength = 6;
+            stats.endurance = 3;
+            stats.intelligence = 4;
+            stats.willpower = 3;
+            stats.speed = 7;
+            stats.charisma = 1;
+            stats.luck = 6;
+            classChoice = "Rogue";
+            break;
+    }
+
+    calculateDerivedStats(stats);
+    std::cout << "Welcome, " << name << " the " << classChoice << std::endl;   
+    return Player(name, stats);
+
+
+}
 // TODO: Need to balance for gameplay 
 // character creation
+
+/*
 Player createPlayer(){
     std::string name;
     Stats stats;
@@ -89,3 +160,4 @@ Player createPlayer(){
     calculateDerivedStats(stats);
     return Player(name, stats);
 }
+    */

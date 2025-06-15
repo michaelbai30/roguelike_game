@@ -15,11 +15,10 @@ struct Stats{
     int luck = 0;
 
     // derived stats
-    // Need to balance this better ... 
-    int attack = 0; // strength * 2
-    int armor = 0; // endurance * 1
-    int magicDmg = 0; // intelligence * 2
-    int magicResist = 0; // willpower * 1 
+    int attack = 0; // strength + (luck / 2);
+    int armor = 0; // endurance * 1.5
+    int magicDmg = 0; // intelligence + (luck / 2);
+    int magicResist = 0; // willpower * 1.5
     int critChance = 0; // luck * 3
 };
 

@@ -1,5 +1,7 @@
-Sometimes, when you select Defend (or others maybe) it says Invalid action try again. Also noticed on Assess Enemy.
+Sometimes, when you select Defend (or others maybe) it says Invalid action try again. Also noticed on Assess Enemy and Attack. this allows for you to infinitely attack. 
 Ensure defend / block action logic is working as intended.
+
+
 
 TODO
 Add battle counter / event counter. Aka, the stage you are on. DONE
@@ -8,5 +10,6 @@ Balance Character Creation / stats.
 Implement shop and casino. 
 Implement Unique enemies. 
 Support more Items
+Charisma 
 
 compile with:  g++ *.cpp -o roguelike
