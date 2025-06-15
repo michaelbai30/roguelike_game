@@ -88,7 +88,7 @@ void printStats(Character& c) {
 static int turnNumber = 1;
 
 // player turn logic
-void playerTurn(Player &player, Character &enemy) {
+void playerTurn(Player &player, Character &enemy, int turnNumber) {
     system(CLEAR); 
 
     std::cout << "\n--- Turn " << turnNumber << " --- (" << player.getName() <<"'s Turn)\n";
@@ -145,7 +145,7 @@ void playerTurn(Player &player, Character &enemy) {
             } else {
                 std::cout << "You have no Potions left!\n";
                 std::this_thread::sleep_for(std::chrono::milliseconds(wait_for));
-                playerTurn(player, enemy); // retry turn if no potions
+                playerTurn(player, enemy, turnNumber); // retry turn if no potions
                 return;
             }
             break;
@@ -157,11 +157,11 @@ void playerTurn(Player &player, Character &enemy) {
         case 6: 
             printStats(player);
             std::this_thread::sleep_for(std::chrono::milliseconds(6000));
-            playerTurn(player, enemy);
+            playerTurn(player, enemy, turnNumber);
         default:
             std::cout << "Invalid action. Try again.\n";
             std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-            playerTurn(player, enemy);
+            playerTurn(player, enemy, turnNumber);
             return;
     }
 
@@ -170,7 +170,7 @@ void playerTurn(Player &player, Character &enemy) {
 
 // enemy turn logic
 // modify this for different enemy types 
-void enemyTurn(Character &enemy, Player &player) {
+void enemyTurn(Character &enemy, Player &player, int turnNumber) {
     system(CLEAR); // clear screen before enemy turn
     std::cout << "\n--- Turn " << turnNumber << " --- (" << enemy.getName() <<"'s Turn)\n";
 
@@ -199,19 +199,17 @@ void enemyTurn(Character &enemy, Player &player) {
 }
 
 // round logic with speed based order and proper defend reset
-void combatRound(Player &player, Character &enemy) {
+void combatRound(Player &player, Character &enemy, int turnNumber) {
     system(CLEAR);
-    std::cout << "\n=== Round " << turnNumber << " ===\n";
-
     int playerSpeed = player.getStats().speed;
     int enemySpeed = enemy.getStats().speed;
 
     if (playerSpeed >= enemySpeed) {
-        playerTurn(player, enemy);
-        if (enemy.isAlive()) enemyTurn(enemy, player);
+        playerTurn(player, enemy, turnNumber);
+        if (enemy.isAlive()) enemyTurn(enemy, player, turnNumber);
     } else {
-        enemyTurn(enemy, player);
-        if (player.isAlive()) playerTurn(player, enemy);
+        enemyTurn(enemy, player, turnNumber);
+        if (player.isAlive()) playerTurn(player, enemy, turnNumber);
     }
 
     turnNumber++;

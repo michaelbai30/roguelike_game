@@ -48,5 +48,5 @@ void loadNextBattle(Player &player) {
         */
 
     Character enemy = generateEnemy();
-    combatRound(player, enemy);
+    // combatRound(player, enemy);
 }
