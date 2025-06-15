@@ -1,0 +1,15 @@
+Reset turn counter on each battle
+Sometimes, when you select Defend (or others maybe) it says Invalid action try again. Also noticed on Assess Enemy.
+Ensure defend / block action logic is working as intended.
+
+TODO
+Add battle counter / event counter. Aka, the stage you are on.
+Add level scaling.
+Balance Character Creation / stats.
+Implement shop and casino. 
+Implement Unique enemies. 
+Support more Items
+
+
+compile with:  g++ *.cpp -o roguelike
+
