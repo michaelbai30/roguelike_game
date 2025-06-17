@@ -41,16 +41,16 @@ void runRandomEvent(Player &player) {
         },
         {
             "Found Gold",
-            "You find some stolen gold. Gain 50 coins.",
+            "You find some stolen gold. Gain 30 coins.",
             [](Player &p) {
-            //    p.addGold(50);
+            //    p.addGold(30);
             }
         },
         {
             "Thief Encounter",
             "A thief steals 20 coins from you!",
             [](Player &p) {
-             //   p.addGold(-20);
+             // chance to steal 20 gold from you, or allow you to gain 70 gold ... 
             }
         }
     };

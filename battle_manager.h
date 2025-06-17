@@ -5,8 +5,8 @@
 #include "character.h"
 #include <vector>
 
-Character generateEnemy();
+Character generateEnemy(int stage);
 
-void loadNextBattle(Player &player);
+void loadNextBattle(Player &player, int stage);
 
 #endif

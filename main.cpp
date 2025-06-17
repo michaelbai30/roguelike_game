@@ -17,7 +17,7 @@ void gameLoop(Player &player) {
     int stage = 1;
 
     while (player.isAlive() && stage <= 10) {
-        Character enemy = generateEnemy();
+        Character enemy = generateEnemy(stage);
         int turnNumber = 1;
 
         std::cout << "\n==============================\n";
@@ -27,7 +27,7 @@ void gameLoop(Player &player) {
 
         while (player.isAlive() && enemy.isAlive()) {
             std::cout << "\n--- Stage " << stage << " | Turn " << turnNumber << " ---\n";
-            combatRound(player, enemy, turnNumber);  // Now passes turnNumber by ref
+            combatRound(player, enemy, turnNumber);  
             turnNumber++;
         }
 
@@ -42,8 +42,6 @@ void gameLoop(Player &player) {
         NextPhase decision = chooseNextPhase();
         if (decision == NextPhase::EVENT) {
             runRandomEvent(player);
-        } else {
-            loadNextBattle(player);
         }
 
         stage++; // advance to next stage AFTER event/battle

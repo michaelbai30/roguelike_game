@@ -4,49 +4,66 @@
 #include <cstdlib>
 #include <ctime>
 
-Character generateEnemy() {
-    // for now, generate a basic enemy with randomized stats
-    std::vector<std::string> names = {"Goblin", "Skeleton", "Orc", "Bandit", "Imp"};
+Character generateEnemy(int stage) {
 
-    std::string name = names[rand() % names.size()];
-    Stats s;
-    int hp = 20 + rand() % 20;
-    s.attack = 5 + rand() % 5;
-    s.armor = 3 + rand() % 3;
-    s.magicDmg = 4 + rand() % 4;
-    s.magicResist = 2 + rand() % 3;
-    s.speed = 5 + rand() % 5;
-    s.critChance = 5 + rand() % 10;
-    s.charisma = 0;
+    Stats stats;
+    std::string name;
 
-    Character enemy(name, hp, s);
-    return enemy;
+    if (stage < 4){
+        // BASIC MOBS
+
+        int pick = rand() % 3;
+        switch (pick){
+            case 0:
+                name = "Imp";
+                stats = {20, 20, 4, 2, 7, 2, 7, 1, 7}; // 30 total stats
+                break;
+            
+            case 1:
+                name = "Bandit";
+                stats = {22, 22, 6, 5, 2, 5, 5, 1, 4}; // 28 total stats
+                break;
+            
+            case 2:
+                name = "Orc";
+                stats = {25, 25, 7, 6, 1, 1, 4, 1, 5}; // 25 total stats
+                break;
+        }
+    }
+    else if (stage < 9){
+            // ELITE MOBS
+
+        int pick = rand() % 3;
+        switch (pick){
+            case 0:
+                name = "Minotaur";
+                stats = {45, 45, 11, 8, 3, 3, 3, 1, 6}; // 35 total stats 
+                break;
+
+            case 1:
+                name = "Lesser Dragon";
+                stats = {50, 50, 4, 5, 10, 7, 2, 1, 4}; // 33 total stats 
+                break;
+
+            case 2:
+                name = "Forest Beast";
+                stats = {40, 40, 9, 5, 1, 2, 10, 1, 9}; // 37 total stats 
+                break;
+        }
+    }
+    else{
+        // FINAL BOSS
+        name = "Elder Dragon";
+        stats = {8, 9, 14, 10, 3, 1, 5};
+    }
+    
+
+    calculateDerivedStats(stats);
+    // Character enemy(name, stats.maxHP, stats);
+    return Character(name, stats.maxHP, stats);
 }
 
-void loadNextBattle(Player &player) {
+void loadNextBattle(Player &player, int stage) {
     std::cout << "\n--- New Battle Begins ---\n";
-/*
-    int numEnemies = 1 + rand() % 3; loads random number of enemies between 1 - 3 
-    std::vector<Character> enemies;
-    for (int i = 0; i < numEnemies; ++i) {
-        enemies.push_back(generateEnemy());
-    }
-
-    for (Character& enemy : enemies) {
-        std::cout << "Enemy: " << enemy.getName() << " (HP: " << enemy.getHP() << ")\n";
-    }
-
-    std::cout << "Prepare for combat...\n";
-    std::cin.ignore();
-    std::cin.get();
-
-    // TEMP: Fight one-by-one
-    for (Character& enemy : enemies) {
-        if (!player.isAlive()) break;
-        combatRound(player, enemy);
-    }
-        */
-
-    Character enemy = generateEnemy();
-    // combatRound(player, enemy);
+    Character enemy = generateEnemy(stage);
 }

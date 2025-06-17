@@ -22,7 +22,7 @@
 #endif
 
 // adjust if needed
-int wait_for = 3000;
+int wait_for = 500;
 
 void animateAction(const std::vector<std::string> &frames, int delayMs = 150) {
     for (const auto &frame : frames) {

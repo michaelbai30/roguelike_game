@@ -96,6 +96,17 @@ Player createPlayer(){
             stats.luck = 6;
             classChoice = "Rogue";
             break;
+
+        case 5:
+            stats.strength = 10;
+            stats.endurance = 10;
+            stats.intelligence = 10;
+            stats.willpower = 10;
+            stats.speed = 10;
+            stats.charisma = 10;
+            stats.luck = 10;
+            classChoice = "DEBUG";
+            break;
     }
 
     calculateDerivedStats(stats);
