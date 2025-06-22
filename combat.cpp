@@ -89,83 +89,99 @@ static int turnNumber = 1;
 
 // player turn logic
 void playerTurn(Player &player, Character &enemy, int turnNumber) {
-    system(CLEAR); 
 
-    std::cout << "\n--- Turn " << turnNumber << " --- (" << player.getName() <<"'s Turn)\n";
+    while (true){
 
-    player.setDefending(false);
+        system(CLEAR); 
 
-    std::cout << GREEN << "[" << player.getName() << " HP: " << player.getHP() << " " << getHPBar(player.getHP(), player.getMaxHP()) << "]" << RESET << " | ";
-    std::cout << RED << "[" << enemy.getName() << " HP: " << enemy.getHP() << " " << getHPBar(enemy.getHP(), enemy.getMaxHP()) << "]" << RESET << "\n";
+        std::cout << "\n--- Turn " << turnNumber << " --- (" << player.getName() <<"'s Turn)\n";
 
-    showMenu();
-    int choice;
-    std::cin >> choice;
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');  // flush newline
+        player.setDefending(false);
 
-    std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+        std::cout << GREEN << "[" << player.getName() << " HP: " << player.getHP() << " " << getHPBar(player.getHP(), player.getMaxHP()) << "]" << RESET << " | ";
+        std::cout << RED << "[" << enemy.getName() << " HP: " << enemy.getHP() << " " << getHPBar(enemy.getHP(), enemy.getMaxHP()) << "]" << RESET << "\n";
 
-    // actions 
-    switch (choice) {
-        case 1: { // Attack
-            std::cout << "You strike with your weapon!\n";
-            animateAction({"-", "--", "---", "--->", "---->", "----->"}, 250);
+        showMenu();
 
-            int dmg = calculateDamage(player.getStats().attack, enemy.getStats().armor, enemy.isDefending());
-            if (isCriticalHit(player.getStats().critChance)) {
-                dmg = static_cast<int>(dmg * 2);
-                std::cout << "Critical Hit!\n";
-            }
-            enemy.takeDamage(dmg);
-            std::cout << "You dealt " << dmg << " damage.\n";
-            break;
+        int choice;
+        std::cin >> choice;
+    
+        // handle bad input
+        if (std::cin.fail()) {
+            std::cin.clear(); // clear error flag
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); 
+            std::cout << "Invalid input. Please enter a number.\n";
+            std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+            continue;
         }
-        case 2: { // Magic
-            std::cout << "You cast Fireball!\n";
-            animateAction({"~", "~~", "~~~", "~~~~>>>", "~~~~~>>>", "~~~~~~>>>"}, 250);
-            int dmg = calculateDamage(player.getStats().magicDmg, enemy.getStats().magicResist, enemy.isDefending());
-            if (isCriticalHit(player.getStats().critChance)) {
-                dmg = static_cast<int>(dmg * 2);
-                std::cout << "Critical Hit!\n";
-            }
-            enemy.takeDamage(dmg);
-            std::cout << "It deals " << dmg << " magic damage.\n";
-            break;
-        }
-        case 3: // Defend
-            std::cout << "You prepare to block incoming attacks.\n";
-            player.setDefending(true);
-            break;
-        case 4: { // Item
-            auto& inventory = player.getInventory();
-            if (inventory["Potion"] > 0) {
-                inventory["Potion"]--;
-                player.heal(10);
-                std::cout << "You use a potion and heal 10 HP.\n";
-            } else {
-                std::cout << "You have no Potions left!\n";
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');  // flush newline
+        std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+
+        // actions 
+        switch (choice) {
+            case 1: { // Attack
+                std::cout << "You strike with your weapon!\n";
+                animateAction({"-", "--", "---", "--->", "---->", "----->"}, 250);
+
+                int dmg = calculateDamage(player.getStats().attack, enemy.getStats().armor, enemy.isDefending());
+                if (isCriticalHit(player.getStats().critChance)) {
+                    dmg = static_cast<int>(dmg * 2);
+                    std::cout << "Critical Hit!\n";
+                }
+                enemy.takeDamage(dmg);
+                std::cout << "You dealt " << dmg << " damage.\n";
                 std::this_thread::sleep_for(std::chrono::milliseconds(wait_for));
-                playerTurn(player, enemy, turnNumber); // retry turn if no potions
                 return;
             }
-            break;
-        }
-        case 5: // Assess
-            printStats(enemy);
-            std::this_thread::sleep_for(std::chrono::milliseconds(6000));
-            return;
-        case 6: 
-            printStats(player);
-            std::this_thread::sleep_for(std::chrono::milliseconds(6000));
-            playerTurn(player, enemy, turnNumber);
-        default:
-            std::cout << "Invalid action. Try again.\n";
-            std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-            playerTurn(player, enemy, turnNumber);
-            return;
-    }
+            case 2: { // Magic
+                std::cout << "You cast Fireball!\n";
+                animateAction({"~", "~~", "~~~", "~~~~>>>", "~~~~~>>>", "~~~~~~>>>"}, 250);
+                int dmg = calculateDamage(player.getStats().magicDmg, enemy.getStats().magicResist, enemy.isDefending());
+                if (isCriticalHit(player.getStats().critChance)) {
+                    dmg = static_cast<int>(dmg * 2);
+                    std::cout << "Critical Hit!\n";
+                }
+                enemy.takeDamage(dmg);
+                std::cout << "It deals " << dmg << " magic damage.\n";
+                std::this_thread::sleep_for(std::chrono::milliseconds(wait_for));
+                return;
+            }
+            case 3: // Defend
+                std::cout << "You prepare to block incoming attacks.\n";
+                player.setDefending(true);
+                std::this_thread::sleep_for(std::chrono::milliseconds(wait_for));
+                return; 
 
-    std::this_thread::sleep_for(std::chrono::milliseconds(wait_for));
+            case 4: { // Item
+                auto& inventory = player.getInventory();
+                if (inventory["Potion"] > 0) {
+                    inventory["Potion"]--;
+                    player.heal(10);
+                    std::cout << "You use a potion and heal 10 HP.\n";
+                    std::this_thread::sleep_for(std::chrono::milliseconds(wait_for));
+                    return; 
+                } 
+                else {
+                    std::cout << "You have no Potions left!\n";
+                    std::this_thread::sleep_for(std::chrono::milliseconds(wait_for));
+                    continue;
+                }
+            }
+            case 5: // Assess
+                printStats(enemy);
+                std::this_thread::sleep_for(std::chrono::milliseconds(5000));
+                return; 
+            case 6: 
+                printStats(player);
+                std::this_thread::sleep_for(std::chrono::milliseconds(5000));
+                continue;
+
+            default:
+                std::cout << "Invalid action. Try again.\n";
+                std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+                continue;
+        }
+    }
 }
 
 // enemy turn logic

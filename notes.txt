@@ -1,39 +1,15 @@
-Sometimes, when you select Defend (or others maybe) it says Invalid action try again. Also noticed on Assess Enemy and Attack. this allows for you to infinitely attack. 
-Ensure defend / block action logic is working as intended.
+BUGS
 When i artificially inflate my stats, it skips combat. Fix that. 
-
+Invalid choice on stat boost shrine should allow you to choose again. check all decision paths.
 
 TODO
-Add battle counter / event counter. Aka, the stage you are on. DONE
-Add level scaling.
 Balance Character Creation / stats.
 Implement shop and casino. 
 Implement Unique enemies with unique movesets. Add new property into Character class ??? that stores possible moves ???
 Support more Items
 Charisma 
-
-compile with:  g++ *.cpp -o roguelike
-
+always add delay between actions. for example, when selecting a stat boost shrine it will output text right away. we need delay.
 
 
-Ex Bug: 
-
---- Random Event Phase ---
-1. Thief Encounter - A thief steals 20 coins from you!
-2. Healing Spirit - A mysterious force heals you for 15 HP.
-3. Pass
-> 3
-You chose to pass.
-Press Enter to continue...
-
-
-==============================
-       Stage 2 Begins
-==============================
-
- has been defeated!
-
--- Reward Phase --
-Choose your reward:
-1. Stat Boost Shrine
-2. Treasure Chest
+HOW TO: 
+compile with:  g++ *.cpp -o roguelike2
