@@ -2,6 +2,7 @@
 #include "player.h"
 #include "character.h"
 #include "stats.h"
+#include "move.h"
 #include <iostream>
 #include <cstdlib>
 #include <cmath>
@@ -22,7 +23,7 @@
 #endif
 
 // adjust if needed
-int wait_for = 500;
+int wait_for = 3000;
 
 void animateAction(const std::vector<std::string> &frames, int delayMs = 150) {
     for (const auto &frame : frames) {
@@ -57,6 +58,25 @@ int calculateDamage(int atk, int def, bool defending) {
     return dmg;
 }
 
+int calculateMoveDamage(const Move& move, const Character& user, const Character& target) {
+    int base = move.power;
+    switch (move.type) {
+        case Move::Type::Physical:
+            return calculateDamage(user.getStats().attack + base, target.getStats().armor, target.isDefending());
+        
+        case Move::Type::Magic:
+            return calculateDamage(user.getStats().magicDmg + base, target.getStats().magicResist, target.isDefending());
+        
+        case Move::Type::Heal:
+            return base + user.getStats().magicDmg / 2;
+       
+        case Move::Type::Defend:
+            return 0;
+    }
+
+    return 0;
+}
+
 // crit check
 bool isCriticalHit(int critChance) {
     return critChance > (rand() % 100);
@@ -76,7 +96,7 @@ void showMenu() {
 
 // stat display when assessed
 void printStats(Character& c) {
-    Stats& s = c.getStats();
+    const Stats &s = c.getStats();
     std::cout << "\n[" << c.getName() << "'s Stats]\n";
     std::cout << "HP: " << c.getHP() << "\n";
     std::cout << "Attack: " << s.attack << " | Armor: " << s.armor << "\n";
@@ -198,19 +218,42 @@ void enemyTurn(Character &enemy, Player &player, int turnNumber) {
 
     std::this_thread::sleep_for(std::chrono::milliseconds(wait_for));
 
-    int choice = rand() % 2;
-    if (choice == 0) {
-        std::cout << enemy.getName() << " attacks!\n";
-        int dmg = calculateDamage(enemy.getStats().attack, player.getStats().armor, player.isDefending());
-        if (dmg <= 0 && enemy.getStats().attack > 0) dmg = 1;
-        player.takeDamage(dmg);
-        std::cout << player.getName() << " took " << dmg << " damage.\n";
+    Move enemy_move = enemy.chooseMove();
+    if (enemy_move.type == Move::Type::Physical){
+        int dmg = calculateMoveDamage(enemy_move, enemy, player);
+        std::cout << enemy.getName() << " used " << enemy_move.name <<"!\n";
+        if (enemy_move.chance >= rand() % 101){
+            player.takeDamage(dmg);
+            
+            std::cout << player.getName() << " took " << dmg << " damage.\n";
+        }
+        else{
+            std::cout << enemy.getName() << " missed!\n";
+        }
+        
     }
-    else {
-        std::cout << enemy.getName() << " defends.\n";
+    else if (enemy_move.type == Move::Type::Magic){
+         int dmg = calculateMoveDamage(enemy_move, enemy, player);
+         std::cout << enemy.getName() << " used " << enemy_move.name <<"!\n";
+        if (enemy_move.chance >= rand() % 101){
+            player.takeDamage(dmg);
+            std::cout << player.getName() << " took " << dmg << " damage.\n";
+        }
+        else{
+            std::cout << enemy.getName() << " missed!\n";
+        }
+    }
+    else if (enemy_move.type == Move::Type::Defend){
+        std::cout << enemy.getName() << " used " << enemy_move.name <<"!\n";
+        std::cout << enemy.getName() << " enters a defensive stance.\n";
         enemy.setDefending(true);
     }
-
+    // TODO
+    else if (enemy_move.type == Move::Type::Heal){
+        std::cout << enemy.getName() << " used " << enemy_move.name <<"!\n";
+        // std::cout << player.getName() << " healed " << dmg << " damage.\n";
+        
+    }
     std::this_thread::sleep_for(std::chrono::milliseconds(wait_for));
 }
 

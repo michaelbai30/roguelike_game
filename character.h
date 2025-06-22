@@ -6,6 +6,8 @@
 
 #include <string>
 #include "stats.h"
+#include <vector>
+#include "move.h"
 
 class Character {
 public:
@@ -16,9 +18,14 @@ public:
     int getMaxHP() const;
     void takeDamage(int damage);
     bool isAlive() const;
-    Stats &getStats();
+    const Stats &getStats() const;
     void setDefending(bool val);
     bool isDefending() const;
+    void addMove(const Move &move);
+    const std::vector<Move> &getMove() const;
+    Move chooseMove() const;
+private:
+    std::vector<Move> moves;
 
 protected:
     std::string name;

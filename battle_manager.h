@@ -6,7 +6,5 @@
 #include <vector>
 
 Character generateEnemy(int stage);
-
 void loadNextBattle(Player &player, int stage);
-
 #endif

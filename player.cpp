@@ -58,19 +58,19 @@ Player createPlayer(){
             stats.endurance = 6;
             stats.intelligence = 2;
             stats.willpower = 4;
-            stats.speed = 4;
-            stats.charisma = 2;
+            stats.speed = 5;
+            stats.charisma = 1;
             stats.luck = 4;
             classChoice = "Warrior";
             break;
 
         case 2:
             stats.strength = 2;
-            stats.endurance = 4;
+            stats.endurance = 5;
             stats.intelligence = 8;
             stats.willpower = 5;
             stats.speed = 5;
-            stats.charisma = 2;
+            stats.charisma = 1;
             stats.luck = 4;
             classChoice = "Mage";
             break;
@@ -78,10 +78,10 @@ Player createPlayer(){
         case 3:
             stats.strength = 5;
             stats.endurance = 8;
-            stats.intelligence = 2;
-            stats.willpower = 7;
+            stats.intelligence = 3;
+            stats.willpower = 8;
             stats.speed = 2;
-            stats.charisma = 3;
+            stats.charisma = 1;
             stats.luck = 3;
             classChoice = "Tank";
             break;

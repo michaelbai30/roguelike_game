@@ -2,6 +2,8 @@
 // characters take in name, maxHP, stats
 
 #include "character.h"
+#include "move.h"
+#include <cstdlib>
 #include <iostream>
 
 Character::Character(const std::string &name, int maxHP, const Stats &stats)
@@ -30,7 +32,7 @@ bool Character::isAlive() const {
     return hp > 0;
 }
 
-Stats& Character::getStats(){
+const Stats& Character::getStats() const{
     return stats;
 }
 
@@ -40,4 +42,18 @@ void Character::setDefending(bool val){
 
 bool Character::isDefending() const{
     return defending;
+}
+
+void Character::addMove(const Move &move){
+    moves.push_back(move);
+}
+
+const std::vector<Move> &Character::getMove() const {
+    return moves;
+}
+
+Move Character::chooseMove() const {
+    if (moves.empty()) return {"Struggle", Move::Type::Physical, 5}; // fallback
+    int idx = rand() % moves.size();
+    return moves[idx];
 }

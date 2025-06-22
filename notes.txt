@@ -1,14 +1,15 @@
 BUGS
-When i artificially inflate my stats, it skips combat. Fix that. 
 Invalid choice on stat boost shrine should allow you to choose again. check all decision paths.
 
 TODO
+Fine tune enemy movesets. Basic balancing + add new interesting effects such as buffing enemy, debuffing user. 
 Balance Character Creation / stats.
+add mana system. expand on magic.
 Implement shop and casino. 
-Implement Unique enemies with unique movesets. Add new property into Character class ??? that stores possible moves ???
 Support more Items
-Charisma 
+Charisma (consider removing it?)
 always add delay between actions. for example, when selecting a stat boost shrine it will output text right away. we need delay.
+add ending / secret boss?
 
 
 HOW TO: 

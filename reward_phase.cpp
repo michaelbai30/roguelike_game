@@ -18,15 +18,17 @@ void statUp(Player &player) {
     std::cin >> choice;
     Stats &stats = player.getStats(); // must be non const
 
-    switch (choice) {
-        case 1: stats.strength++; std::cout << "Strength increased!\n"; break;
-        case 2: stats.endurance++; std::cout << "Endurance increased!\n"; break;
-        case 3: stats.intelligence++; std::cout << "Intelligence increased!\n"; break;
-        case 4: stats.willpower++; std::cout << "Willpower increased!\n"; break;
-        case 5: stats.speed++; std::cout << "Speed increased!\n"; break;
-        case 6: stats.charisma++; std::cout << "Charisma increased!\n"; break;
-        case 7: stats.luck++; std::cout << "Luck increased!\n"; break;
-        default: std::cout << "Invalid choice.\n"; break;
+    while (true){
+        switch (choice) {
+            case 1: stats.strength++; std::cout << "Strength increased!\n"; return;
+            case 2: stats.endurance++; std::cout << "Endurance increased!\n"; return;
+            case 3: stats.intelligence++; std::cout << "Intelligence increased!\n"; return;
+            case 4: stats.willpower++; std::cout << "Willpower increased!\n"; return;
+            case 5: stats.speed++; std::cout << "Speed increased!\n"; return;
+            case 6: stats.charisma++; std::cout << "Charisma increased!\n"; return;
+            case 7: stats.luck++; std::cout << "Luck increased!\n"; return;
+            default: std::cout << "Invalid choice.\n"; continue;
+        }
     }
 
     calculateDerivedStats(stats);
@@ -61,6 +63,7 @@ std::string rewardName(RewardType reward) {
 void applyReward(Player &player, RewardType reward) {
     switch (reward) {
         case RewardType::HEAL:
+             // int amt = rand(8, 20);
             healPlayer(player, 15);
             break;
         case RewardType::STAT_UP:
